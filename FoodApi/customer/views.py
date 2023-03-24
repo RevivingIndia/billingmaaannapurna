@@ -525,13 +525,6 @@ class saleOrder(APIView):
 
             orderId = 'order' + ''.join(
                 random.choices(string.digits + string.ascii_letters, k=random.randint(5, 10)))
-            total = 0
-            for i in orderData:
-                unitPrice = int(i["unitPrice"])
-                itemQuantity = int(i["itemQuantity"])
-                total += unitPrice * itemQuantity
-                data = total+otherCost-discount
-
 
             SaleOrder.objects.create(
                 orderId=orderId,
@@ -542,7 +535,7 @@ class saleOrder(APIView):
                 payment=payment,
                 mobile=mobile,
                 otherCost=otherCost,
-                total=data,
+                total=total,
                 cgst=cgst,
                 sgst=sgst,
                 discount=discount
