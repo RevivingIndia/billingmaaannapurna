@@ -518,12 +518,20 @@ class saleOrder(APIView):
             payment = serializer.data["payment"]
             mobile = serializer.data["mobile"]
             otherCost = serializer.data["otherCost"]
+            discount = serializer.data["discount"]
             total = serializer.data["total"]
             cgst = serializer.data["cgst"]
             sgst = serializer.data["sgst"]
 
             orderId = 'order' + ''.join(
                 random.choices(string.digits + string.ascii_letters, k=random.randint(5, 10)))
+            total = 0
+            for i in orderData:
+                unitPrice = int(i["unitPrice"])
+                itemQuantity = int(i["itemQuantity"])
+                total += unitPrice * itemQuantity
+                data = total+otherCost-discount
+
 
             SaleOrder.objects.create(
                 orderId=orderId,
@@ -534,9 +542,10 @@ class saleOrder(APIView):
                 payment=payment,
                 mobile=mobile,
                 otherCost=otherCost,
-                total=total,
+                total=data,
                 cgst=cgst,
-                sgst=sgst
+                sgst=sgst,
+                discount=discount
             )
 
             return Response({

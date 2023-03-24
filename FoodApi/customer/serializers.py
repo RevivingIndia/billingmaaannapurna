@@ -94,10 +94,11 @@ class SaleOrderSerializer(serializers.Serializer):
     orderData = serializers.JSONField()
     orderType = serializers.CharField(max_length=100)
     payment = serializers.CharField(max_length=100)
-    otherCost = serializers.CharField(max_length=100)
+    otherCost = serializers.IntegerField(required=False,allow_null=True)
+    discount = serializers.IntegerField(required=False, allow_null=True)
     total = serializers.CharField(max_length=100)
-    cgst = serializers.CharField(max_length=100)
-    sgst = serializers.CharField(max_length=100)
+    cgst = serializers.CharField(max_length=100,required=False,allow_null=True)
+    sgst = serializers.CharField(max_length=100,required=False,allow_null=True)
 
 
 class UpdateSaleOrderStatus(serializers.Serializer):
