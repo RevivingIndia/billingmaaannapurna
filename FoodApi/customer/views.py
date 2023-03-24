@@ -548,11 +548,11 @@ class saleOrder(APIView):
                 discount=discount
             )
 
-            return Response({
+            return JsonResponse({
                 'status': 200,
                 'message': "Order  Successfully"
             })
-        return Response({
+        return JsonResponse({
             'status': 400,
             'message': 'Something went wrong',
             'data': serializer.errors
@@ -668,3 +668,36 @@ class saleOrderDateStatus(APIView):
                 'message': 'Something went wrong',
                 'errors': str(e)
             })
+
+
+class CalculateTotalCost(APIView):
+    def post(self, request):
+        data = request.data
+        serializer = calculateTotalCostSerializer(data=data)
+        if serializer.is_valid():
+            orderData = serializer.data["orderData"]
+            print(type(orderData))
+            Othercost= orderData["otherCost"]
+            print(Othercost)
+            discount = orderData["discount"]
+
+            total = 0
+            for i in orderData["orderData"]:
+                unitPrice = int(i["unitPrice"])
+                itemQuantity = int(i["itemQuantity"])
+
+                total += unitPrice * itemQuantity
+
+            data = total+Othercost-discount
+
+
+            return JsonResponse({
+                'status': 200,
+                'message': "Order  Successfully",
+                "result": data
+            })
+        return JsonResponse({
+            'status': 400,
+            'message': 'Something went wrong',
+            'data': serializer.errors
+        })

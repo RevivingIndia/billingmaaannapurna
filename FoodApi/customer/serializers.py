@@ -104,3 +104,6 @@ class SaleOrderSerializer(serializers.Serializer):
 class UpdateSaleOrderStatus(serializers.Serializer):
     orderId = serializers.CharField(max_length=100)
     Status = serializers.CharField(max_length=100)
+
+class calculateTotalCostSerializer(serializers.Serializer):
+    orderData = serializers.JSONField()
